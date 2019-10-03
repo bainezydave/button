@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        html, body {
+            width: 100%; 
+            height: 100%;
+        }
+
+        html {
+            font-family: 'Helvetica', 'sans-serif', 'Arial'; 
+            background-color: #323639;
+        }
+        
+        body { 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+        }
+
+        #settings { 
+            position: absolute; 
+            top: 0; 
+            left: 0; 
+        }
+
+        button {
+            width: 160px; height: 60px;
+            display: inline-block;  
+            font-size: 22px;
+            background-color: #0069ed;
+            color: #FFF;
+            cursor: pointer;
+            text-align: center;
+            outline: none;
+            border: solid 6px #0069ed;
+            border-radius: 30px;
+            appearance: none;
+            user-select: none;
+            transition: background-color .3s, width .5s, color .5s, font-size .5s, transform .3s;
+        }
+
+        button:hover {
+            transform: scale(1.05);
+        }
+
+        button::after 	   { content: 'Submit' }
+        button.done::after { content: 'Success' }
+        button.fail::after { content: 'Try again' }
+
+        button.loading {
+            width: 60px;
+            background-color: transparent;
+            color: transparent;
+            font-size: 1px;
+            pointer-events: none;
+            cursor: default;
+            animation: pulse 2s ease-in-out infinite .6s;
+        }
+
+        button.done {
+            background-color: #4caf50; 
+            border-color: #4caf50;
+            width: 160px; 
+            font-size: 22px; 
+            color: #FFF;
+        }
+
+        button.fail {
+            background-color: #f44336; 
+            border-color: #f44336;
+            width: 160px; 
+            font-size: 22px; 
+            color: #FFF;
+        }
+
+        @keyframes pulse {
+            0%   { box-shadow: 0 0 0 0 #2c7fcc73; }
+            10%  { transform: scale(1.2); }
+            50%  { box-shadow: 0 0 0 20px transparent; }
+            70%  { transform: scale(1); }
+            100% { box-shadow: 0 0 0 0 transparent; }
+        }
+
+    </style>
+</head>
+<body>
+    <div id="settings">
+        <input type="number" value="200"  id="statusCode">
+        <input type="number" value="3000" id="timeout">
+    </div>
+    <button type="submit" id="btn-sbmt" onclick="submit()"></button>
+
+    <script>
+        async function submit() 
+        {
+            const   code    = document.getElementById('statusCode').value,
+                    timeout = document.getElementById('timeout').value,
+                    url     = `https://httpstat.us/${code}?sleep=${timeout}`,
+                    button  = document.getElementById('btn-sbmt');
+                        
+            button.className = "loading";
+
+            const res = await fetch(url);
+
+            button.className = res.status === 200 || res.status === 304 ? "done" : "fail";
+        }
+    </script>
+</body>
+</html>
+
+
+
