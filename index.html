@@ -107,7 +107,7 @@
 
             const res = await fetch(url);
 
-            button.className = res.status === 200 || res.status === 304 ? "done" : "fail";
+            button.className = res.ok ? "done" : "fail";
         }
     </script>
 </body>
